@@ -50,6 +50,7 @@ var Wallet = function(address, name, pwdPrompt) {
   this.address = address;
   this.walletName = name;
   this.pwdPrompt = pwdPrompt;
+
   this.cnyBalance = 0;
   this.usdBalance = 0;
 };
@@ -307,6 +308,7 @@ Wallet.prototype.toJson = function() {
     address: this.address,
     walletName: this.walletName,
     pwdPrompt: this.pwdPrompt,
+
     cnyBalance: this.cnyBalance,
     usdBalance: this.usdBalance
     // keystore: (typeof this.keystore === 'string') ? this.keystore : JSON.stringify(this.keystore)
@@ -442,6 +444,7 @@ Wallet.prototype.exportPrivateKey = function(password, address, callback) {
     // return "密码错误";
   }
 };
+
 
 
 
@@ -1018,6 +1021,7 @@ function addNewWallet(wallet, keystore) {
           address: wallet.getAddress(),
           walletName: wallet.getWalletName() !== undefined ? wallet.getWalletName() : walletsObj[i].walletName,
           pwdPrompt: wallet.getPwdPrompt() !== undefined ? wallet.getPwdPrompt() : walletsObj[i].pwdPrompt,
+
           cnyBalance: wallet.cnyBalance,
           usdBalance: wallet.usdBalance
         });

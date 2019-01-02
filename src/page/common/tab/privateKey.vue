@@ -130,7 +130,8 @@
               }else{
                 _this.$store.commit("address",wallet.address);
                 localStorage.setItem("isCanBackUp:"+wallet.address,'no');
-                _this.$router.push({path:"/index"});
+                _this.$router.push({path:"/warp"});
+
               }
             },null);
           }
@@ -144,7 +145,8 @@
               }else{
                 _this.$store.commit("address",wallet.address);
                 localStorage.setItem("isCanBackUp:"+wallet.address,'no');
-                _this.$router.push({path:"/index"});
+                _this.$router.push({path:"/warp"});
+
               }
             },null);
           }

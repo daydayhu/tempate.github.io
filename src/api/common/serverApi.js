@@ -97,6 +97,7 @@ ServerApi.sendTrans = function(tx, callback) {
   };
   // sendHttp(trans+'/v1/bcy/test/txs/push','post',data,function (err, response) {
   sendHttp(trans + '/v1/btc/test3/txs/push', 'post', data, function(err, response) {
+
     console.log(response);
     callback(response, null);
 

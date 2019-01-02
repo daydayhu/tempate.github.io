@@ -46,7 +46,11 @@ const router = new VueRouter({
       component: resolve => require(['@/page/wallet_details/chooseImport'], resolve),
 
     },
-
+    //钱包主页
+    {
+      path: '/warp',
+      component: resolve => require(['@/page/warp'], resolve),
+    },
     //钱包主页
     {
       path: '/index',

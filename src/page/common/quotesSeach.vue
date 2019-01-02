@@ -1,8 +1,11 @@
 <template>
-    <div class="searchContainer">
+    <div class="searchContainer" >
         <div class="searchC">
-            <input type="text" v-model="tokenVal" class="search"  @blur="seachToken">
+            <input type="search" v-model="tokenVal" class="search"  @focus="makeIf = true" @keydown.enter="seachToken"
+                   v-focus>
             <span class="sIcon"></span>
+            <span class="reset" @click="reset" v-if="tokenVal !=''"></span>
+
         </div>
         <div class="segment">
             <ul class="content">
@@ -19,14 +22,16 @@
                             <div class="cny">{{priceRateMark[priceRateType]}}{{item.Market}}</div>
                         </li>
                         <li class="focus" :class="{'nofocus':item.active}" @click="tabActive(item)">
-                            {{!item.active?"关注":"已关注"}}
+                            {{!item.active?'关注':'已关注'}}
                         </li>
                     </ul>
                 </li>
-                <p  class="title" v-if="tokenList.length<1">1.不支持模糊搜索，请输入完整的token</p>
-                <p  class="title" v-if="tokenList.length<1">2.您输入的token本平台不支持行情查询</p>
+                <p class="title" v-if="tokenList.length<1">1.不支持模糊搜索，请输入完整的token</p>
+                <p class="title" v-if="tokenList.length<1">2.您输入的token本平台不支持行情查询</p>
             </ul>
         </div>
+        <div class="make" v-if="makeIf" @click="seachToken"></div>
+
     </div>
 </template>
 <script>
@@ -36,18 +41,24 @@
     name: 'quotes',
     data() {
       return {
-        tokens: "",
+        tokens: '',
         tokenList: {},
         priceRateSet: {},
-        priceRateMark: { CNY: "￥", USD: "$" },
-        priceRateType: "CNY",
-        tokenVal: ""
+        priceRateMark: {CNY: '￥', USD: '$'},
+        priceRateType: 'CNY',
+        tokenVal: '',
+        makeIf: false,
+
 
       };
     },
     methods: {
       seachToken() {
-        this.init(this.tokenVal);
+        this.makeIf = false;
+        if (this.tokenVal != '') {
+          this.init(this.tokenVal);
+        }
+
       },
       tabActive(item) {
         item.active = !item.active;
@@ -56,7 +67,8 @@
           if (tokens.split(',') == '') {
             localStorage.setItem('tokens', 'ETH');
           } else {
-             tokens = tokens.split(',');
+            tokens = tokens.split(',');
+
             let token = item.symbol;
             tokens.push(token);
             localStorage.setItem('tokens', tokens.join(','));
@@ -68,8 +80,9 @@
           localStorage.setItem('tokens', token.join(','));
         }
         this.$router.push({
-          path:"/quotes"
-        })
+          path: '/warp',
+        });
+
       },
       queryPrice(list, callback) {
         this.$ethServerApi.queryPrice(list.toLocaleLowerCase().split(','), (res) => {
@@ -81,23 +94,45 @@
           }
         });
       },
+      reset() {
+        this.tokenVal = '';
+      },
+
       icons(str) {
         return new Promise((resolve, reject) => {
           ServerApi.getQuotes('/marketcap/v1/cryptocurrency/info', {
             symbol: str,
           }, (res) => {
+            console.log(res, 'info');
             if (res.status != 200) {
               this.tokenVal = '';
-              this.$toast('请检查输入的Token是否正确');
+              if (res.status == 429) {
+                this.$toast('请求频率过快');
+              } else {
+                this.$toast('请检查输入的Token是否正确');
+              }
+              this.$indicator.close();
+
+
             } else {
               resolve(res);
             }
           }, (e) => {
-            reject(e);
+            if (e) {
+              this.tokenVal = '';
+              this.$toast('请检查输入的Token是否正确');
+              this.$indicator.close();
+            } else {
+              reject(e);
+            }
+
           });
         });
       },
       init(val) {
+        this.$indicator.open();
+
+
         let that = this;
         let seachToken = '';
         let tokens = localStorage.getItem('tokens');
@@ -106,6 +141,7 @@
         } else {
           seachToken = this.tokens = tokens || 'ETH';
         }
+
         this.icons(seachToken).then((icons) => {
           that.queryPrice(seachToken, () => {
             ServerApi.getQuotes('/marketcap/v1/cryptocurrency/quotes/latest', {
@@ -130,8 +166,13 @@
                 list.push(data[item]);
               }
               that.tokenList = list;
+              this.$indicator.close();
+
             }, (e) => {
               console.log(e, '获取价值失败');
+              this.$indicator.close();
+
+
             });
           });
         });
@@ -139,6 +180,10 @@
       },
     },
     mounted: function() {
+      setTimeout(() => {
+        this.makeIf = true;
+      }, 200);
+
       this.tokenVal = '';
       this.priceRateType = localStorage.getItem('priceRateType')
           ? localStorage.getItem('priceRateType')
@@ -149,6 +194,23 @@
 </script>
 
 <style scoped lang="less">
+    .make {
+        position: fixed;
+        top: 1rem;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .makeTrue {
+        background-color: rgba(0, 0, 0, .05) !important;
+    }
+
+    .focusinput {
+        background-color: #fff !important;
+    }
+
+
     .searchContainer {
         position: absolute;
         width: 100%;
@@ -159,12 +221,14 @@
             margin-top: 0.44rem;
             position: relative;
             input {
-                width: 6.38rem;
+                width: 6.98rem;
+
                 height: 0.56rem;
                 margin: 0 auto;
                 background: rgba(239, 239, 239, 1);
                 border-radius: 0.10rem;
-                padding: 0.15rem 0 0.15rem 0.80rem;
+                padding: 0.15rem 0.8rem 0.15rem 0.80rem;
+
                 /*box-sizing: border-box;*/
             }
             .sIcon {
@@ -172,8 +236,18 @@
                 height: 0.36rem;
                 position: absolute;
                 left: 0.45rem;
-                top: 0.24rem;
-                background: url("") no-repeat center center;
+                top: 0.1rem;
+                background: url("../../assets/common/img/icon_sousuo_hui@2x.png") no-repeat center center;
+                background-size: cover;
+            }
+            .reset {
+                width: 0.36rem;
+                height: 0.36rem;
+                position: absolute;
+                right: 0.45rem;
+                top: 0.1rem;
+                background: url("../../assets/common/img/icon_quxiao@2x.png") no-repeat center center;
+
                 background-size: cover;
             }
         }
@@ -297,7 +371,8 @@
                     }
                 }
             }
-            .title{
+            .title {
+
                 font-size: 0.20rem;
             }
         }

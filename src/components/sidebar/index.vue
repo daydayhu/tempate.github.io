@@ -96,12 +96,14 @@
         // :to="'/'+currencyType+'/'+'message_center'"
         switch (this.currencyType) {
           case 'ETH':
+
             // localStorage.setItem('eth_readStatus', false);
             this.$router.push({
               path: '/ETH/message_center',
             });
             break;
           case 'BTC':
+
             // localStorage.setItem('btc_readStatus', false);
             this.$router.push({
               path: '/BTC/message_center',

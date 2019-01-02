@@ -3,7 +3,7 @@
         <!--TODO:head-->
         <div class="walletHead">
             <span class="menuBtn" @click="sidebarShow"></span>
-            <span class="setting" @click="setting"></span>
+
             <div class="system" @click="selectPromptShow">{{currencyType}}<span class="down_icon"></span></div>
             <div class="walletName" :class="{'walletNameTop':backupStatus != '1'}" @click="walletDetail"
                  v-if="currentWallet">{{currentWallet.walletName}}
@@ -16,6 +16,7 @@
                 <button class="backups" @click="walletDetail" v-if="backupStatus == '1'">请备份</button>
             </div>
             <div class="walletAmount" v-if="true">
+
                 <p>≈ <span>{{totalBalance[currencyType] | rateFormat(this.currencyType)}}</span></p>
                 <p>总资产 ( {{priceRateMark[priceRateType]}} )</p>
             </div>
@@ -31,6 +32,7 @@
                 <div class="priceC">
                     <div>{{item.balance | numFormat(item.symbol)}}</div>
                     <!--<div v-if="priceRateSet[item.symbol]">≈ {{priceRateMark[priceRateType]}} {{item.realBalance |-->
+
                         <!--rateFormat(item.symbol)}}-->
                     <!--</div>-->
                   <div>≈ {{priceRateMark[priceRateType]}} {{item.realBalance | rateFormat(item.symbol)}}</div>
@@ -50,18 +52,20 @@
 
 <script>
   import $ from 'jquery';
-  import BtcSocket from '../api/BTC/btc_socket';
-  import CreateDB from '../api/indexDB';
-  import EthPoll from '../api/pollNotice';
+  // import BtcSocket from '../api/BTC/btc_socket';
+  // import CreateDB from '../api/indexDB';
+  // import EthPoll from '../api/pollNotice';
   import Sidebar from '../components/sidebar/index';
   import Prompt from '../components/prompt/index';
   import {$USDT} from '../api/BTC/USDT';
 
   export default {
+    name: 'index',
     data() {
       return {
         currentWallet: null,
         currencyType: '',
+
         totalBalance: {
           ETH: 0,
           BTC: 0
@@ -74,6 +78,7 @@
         ethToggle: false,
         btcToggle: false,
         walletList: {
+
           ETH:[],
           BTC:[]
         },
@@ -89,8 +94,9 @@
 
         btcSocket: null,
         systemNoticeDB: null,
-        DB_DELAY_TIME: 2000,
         ethPoll: null,
+        DB_DELAY_TIME: 2000,
+
 
         BTC_confirmations: 3, // BTC 确认块 默认3
         priceRateType: 'cny', //cny 人民币(默认) usd 美元
@@ -143,7 +149,8 @@
         this.getAllWallets();
         if (this.getCurrentWallet()) {
           this.$router.push({
-            path: '/index',
+            path: '/warp',
+
             query: {
               type: this.currencyType,
             },
@@ -165,6 +172,8 @@
         this.sidebarFlag = false;
       },
       toWallet(item) {
+        // 先类型
+
         switch (this.currencyType) {
           case 'ETH':
             localStorage.setItem('currWallet', JSON.stringify(item));
@@ -179,6 +188,7 @@
         this.reset();
       },
       toTransaction(item) {
+
         switch (this.currencyType) {
           case 'ETH':
             this.$router.push({
@@ -265,6 +275,7 @@
         *
         * */
 
+
         this.currentWallet = null;
         switch (this.currencyType) {
           case 'ETH':
@@ -313,17 +324,20 @@
         }
       },
       getTokens() {
+
         if (this.currentWallet) {
           let key = '_getTokens' + this.currentWallet.address;
           switch (this.currencyType) {
             case 'ETH':
               this.walletList.ETH = $Store.state.getApiCache(key) || [];
+
               this.totalBalance.ETH = $Store.state.getApiCache(key + '_totalBalance') || 0;
               if (!this.ethToggle) {
                 this.ethToggle = true;
                 this.currentWallet.getTokens((err, data) => {
                   let list = ['btc', 'usdt'];
                   let _data = data;
+
                   console.log('data=====================',_data);
                   if (_data.length) {
                     _data.forEach((value) => {
@@ -332,6 +346,7 @@
                   }
                   this.TokenList = list;
                   //TODO: 获取币种率
+
 
                   this.queryPrice(this.TokenList,() => {
                     if (this.currencyType === 'ETH') {
@@ -365,6 +380,7 @@
               break;
             case 'BTC':
               var _itemBtc = {balance: 0, symbol: this.currencyType};
+
               this.totalBalance.BTC = $Store.state.getApiCache(key + '_totalBalance') || 0;
               //TODO: 缓存待处理
               this.walletList.BTC = $Store.state.getApiCache(key) || [];
@@ -382,6 +398,7 @@
                     if (this.currencyType === 'BTC') {
                       _itemBtc.balance = res.data;
                       _itemBtc.realBalance = new Decimal(_itemBtc.balance).mul(
+
                         new Decimal(this.priceRateSet[_itemBtc.symbol][this.priceRateType])).toNumber();
                       _cny = new Decimal(_itemBtc.balance).mul(
                         new Decimal(this.priceRateSet[_itemBtc.symbol]['cny'])).toNumber();
@@ -399,6 +416,7 @@
                       let address = this.currentWallet.address;
                       switch (process.env.BTC_NET) {
                         case 'mainnet':
+
                           $USDT.getAddrV2(`addr=${address}` , (res) => {
                             let balance = res.data[address].balance;
                             let usdtObj = {
@@ -411,6 +429,7 @@
                               if (balance[i].id == '31') {
                                 usdtObj.symbol = 'USDT';
                                 usdtObj.realBalance = new Decimal(balance[i].value).mul(
+
                                   new Decimal(this.priceRateSet['USDT'][this.priceRateType])).toNumber();
                                 _cny = new Decimal(balance[i].value).mul(
                                   new Decimal(this.priceRateSet['USDT']['cny'])).toNumber();
@@ -447,6 +466,7 @@
                               realBalance: 0,
                             };
                             usdtObj.balance = res.data.value;
+
                             usdtObj.realBalance = new Decimal(usdtObj.balance).mul(new Decimal(this.priceRateSet['USDT'][this.priceRateType])).toNumber();
                             _cny = new Decimal(usdtObj.balance).mul(new Decimal(this.priceRateSet['USDT']['cny'])).toNumber();
                             _usd = new Decimal(usdtObj.balance).mul(new Decimal(this.priceRateSet['USDT']['usd'])).toNumber();
@@ -509,9 +529,10 @@
         });
       },
       // 货币 金额 换算
+
       queryPrice(list,callback) {
         console.log(this.TokenList, 'this.TokenList');
-        // TODO: 可增加this.priceRateSet 
+        // TODO: 可增加this.priceRateSet
         this.TokenList = list || this.TokenList;
         this.$ethServerApi.queryPrice(this.TokenList, (res) => {
           if (res.status_code === 200) {
@@ -519,6 +540,7 @@
               this.priceRateSet[value.asset.toUpperCase()] = value.prices;
             });
             console.log('this.priceRateSet====', this.priceRateSet);
+
             if(callback)callback();
           }
         });
@@ -545,6 +567,7 @@
             omniData[value] = _script.slice(_USDTSTR[value].index, _USDTSTR[value].index + _USDTSTR[value].len);
             omniData['d_' + value] = parseInt(omniData[value], 16);
           });
+
           console.log('omniData=====',omniData);
           this.usdtScriptData = omniData;
         } else {
@@ -557,12 +580,14 @@
       createDB() {
         // TODO: 数据库创建
         this.systemNoticeDB = new CreateDB();
+
         this.systemNoticeDB.openDB({name: 'SystemNotice', keyPath: 'id', status: 'readwrite'}, (data) => {
           console.log('当前数据集合', data);
           // TODO: 创建socket连接
           this.createSockete();
           // TODO: 创建长轮询
           this.createPoll();
+
 
           // TODO: 首页增加红点机制处理
           this.systemNoticeDB.readAll(null,res=>{
@@ -589,6 +614,7 @@
       createSockete() {
         // TODO: socket 实现
         // ETH 无需
+
 
         // TODO: 增加使用判断
         /*
@@ -679,12 +705,14 @@
           // 记录历史
 
           // 获取钱包地址
+
           let _type, _hash, _address, _assetType, _time, currentAddress, _value = 0;
 
           if (data.op && data.op === 'utx') {
             _hash = data.x.hash;
             _time = data.x.time;
             let _addressFlag = false;
+
 
             btcWallets.forEach((value) => {
               if (_addressFlag) return false;
@@ -740,6 +768,7 @@
             if (_addressFlag) {
               var _data = {
                 type: _type,
+
                 assetType: _assetType,
                 value: _value,
                 txid: _hash,  // hash 与txid 区别
@@ -790,6 +819,7 @@
       },
       createPoll() {
 
+
         if (this.ethPoll) {
           this.ethPoll.cancelPoll = true;
           if (this.ethPoll.timer) {
@@ -807,6 +837,7 @@
           if (res.status_code === 200) {
             console.log('轮询数据-----', res);
             if (res.data.length) {
+
 
               /*
               *  1.小红点逻辑
@@ -826,6 +857,7 @@
                 _data.assetType = obj.symbot;
                 _data.value = obj.value;
                 _data.txid = obj.txid;
+
                 _data.time = new Decimal(obj.createTime).div(new Decimal(1000)).toNumber();
                 _data.address = obj.address;
                 _data.readStatus = false;
@@ -881,7 +913,8 @@
 
     },
     mounted() {
-      
+
+
       // TODO:禁止选中
       document.onselectstart = function(){
         event.returnValue = false;
@@ -915,25 +948,26 @@
       // this.getTokens();
 
       // TODO: 创建/开启数据库
-      this.createDB();
+      // this.createDB();
 
 
       // ******************************************************************************
 
     },
     destroyed() {
-      if (this.btcSocket) {
-        this.btcSocket.onclose();
-        this.btcSocket = null;
-      }
-      if (this.ethPoll) {
-        this.ethPoll.cancelPoll = true;
-        if (this.ethPoll.timer) {
-          clearTimeout(this.ethPoll.timer);
-          this.ethPoll.timer = null;
-        }
-        this.ethPoll = null;
-      }
+      // if (this.btcSocket) {
+      //   this.btcSocket.onclose();
+      //   this.btcSocket = null;
+      // }
+      // if (this.ethPoll) {
+      //   this.ethPoll.cancelPoll = true;
+      //   if (this.ethPoll.timer) {
+      //     clearTimeout(this.ethPoll.timer);
+      //     this.ethPoll.timer = null;
+      //   }
+      //
+      //   this.ethPoll = null;
+      // }
     },
     components: {
       Sidebar,
@@ -963,7 +997,9 @@
 <style scoped>
     .Index {
         width: 100%;
-        height: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     .isDeleting {
@@ -1173,6 +1209,7 @@
         background-color: #F6F6F6;
         overflow-y: scroll;
         box-sizing: border-box;
+        flex: auto;
     }
 
     .divinp {

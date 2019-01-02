@@ -143,7 +143,8 @@
                     }else{
                       _this.$store.commit("address",wallet.address);
                       _this.$router.push({
-                        path:"/index",
+                        path:"/warp",
+
                         query:{
                           type: 'ETH'
                         }
@@ -160,7 +161,8 @@
                     }else{
                       _this.$store.commit("address",wallet.address);
                       _this.$router.push({
-                        path:"index",
+                        path:"/warp",
+
                         query:{
                           type:'ETH',
                         }
@@ -178,7 +180,8 @@
                       $ ('.btn_div').html(err).show ().delay (500).fadeOut ();
                     }else{
                       _this.$router.push({
-                        path:"index",
+                        path:"/warp",
+
                         query:{
                           type:'BTC',
                         }
@@ -193,7 +196,8 @@
                       $ ('.btn_div').html(err).show ().delay (500).fadeOut ();
                     }else{
                       _this.$router.push({
-                        path:"index",
+                        path:"/warp",
+
                         query:{
                           type:'BTC',
                         }

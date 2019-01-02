@@ -25,13 +25,15 @@
               case 'ETH':
                 this.common.Wallet.getCurrWallet();
                 setTimeout(function () {
-                  _this.$router.push({path:"/index"});
+                  _this.$router.push({path:"/warp"});
+
                 },2000);
                 break;
               case 'BTC':
                 this.btcCommon.BtcWallet.getCurrWallet();
                 setTimeout(function () {
-                  _this.$router.push({path:"/index"});
+                  _this.$router.push({path:"/warp"});
+
                 },2000);
                 break;
               default:

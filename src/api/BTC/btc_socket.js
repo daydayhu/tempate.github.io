@@ -106,6 +106,7 @@ WalletBtcSDK.prototype.keepalive = function(onsuccess,onfail) {
           Btc._keepalive_fails++;
           console.log('_keepalive_fails===',Btc._keepalive_fails);
           if (Btc._keepalive_fails >= MAX_KEEPALIVE_FAILS) {
+
             console.log('_.keepalive reconnect....');
             Btc._onclose();
           }

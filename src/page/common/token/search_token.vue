@@ -129,6 +129,7 @@
         background-size: contain;
     }
 
+
     .cancel {
         font-size: 0.30rem;
         font-weight: 500;

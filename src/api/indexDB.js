@@ -5,6 +5,7 @@ var CreateDB = function (dbName,version) {
   this.name = dbName || DEFAULT_DB_name;
   this.version = version || DEFAULT_DB_version;
   this.db = null;
+
   this.defaultTable = {name:'SystemNotice',keyPath:'id',status:'readwrite'};
   this._dataSet = {};
   // TODO:表数组
@@ -23,6 +24,7 @@ CreateDB.prototype.openDB = function (table,callback) {
     this.db = e.target.result;
     var objectStore;
     // btc
+
     if(!this.db.objectStoreNames.contains('SystemNotice')){
       objectStore = this.db.createObjectStore('SystemNotice', { keyPath: 'id', autoIncrement: true});
       // 定义存储对象的数据项
@@ -30,6 +32,7 @@ CreateDB.prototype.openDB = function (table,callback) {
         unique: true
       });
       objectStore.createIndex('type', 'type');
+
       objectStore.createIndex('assetType', 'assetType');
       objectStore.createIndex('value', 'value');
       objectStore.createIndex('txid', 'txid');
@@ -142,6 +145,7 @@ CreateDB.prototype.readAll = function (table,callback) {
   }
 };
 
+
 CreateDB.prototype.update = function(id,data,table,callback) {
   var table = table || this.defaultTable;
   var data = data;
@@ -159,6 +163,7 @@ CreateDB.prototype.update = function(id,data,table,callback) {
 
   request.onsuccess = (event) => {
     console.log('数据更新成功');
+
     if (callback) callback(event)
   };
 
@@ -184,6 +189,7 @@ CreateDB.prototype.remove = function (id) {
 };
 
 
+
 CreateDB.prototype.indexGetData = function (callback,obj,key,table) {
   var table = table || this.defaultTable;
   var request = this.db.transaction([table.name], table.status);
@@ -192,6 +198,7 @@ CreateDB.prototype.indexGetData = function (callback,obj,key,table) {
   var index = store.index(key);
   var req = index.openCursor();
   var lastId = 1;
+
   var txid =  (obj && obj.txid) ? obj.txid : '';
 
   // 判断txid的重复性 重复的不给予添加
@@ -200,6 +207,7 @@ CreateDB.prototype.indexGetData = function (callback,obj,key,table) {
     var cursor = evt.target.result;
     if(cursor){
       console.log('key', cursor.value);
+
       console.log('key txid', txid);
       lastId = cursor.value.id ? cursor.value.id + 1 : lastId;
       if (cursor.value.txid !== txid) {

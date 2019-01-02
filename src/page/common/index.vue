@@ -128,7 +128,8 @@
 
         // location.reload(true);
         console.log('BTC-ETH');
-        this.$router.push('/index');
+        this.$router.push('/warp');
+
 
         this.common.Wallet.importFromWallet(item);
         localStorage.setItem('wallet_system', 'ETH');

@@ -3,6 +3,7 @@
         <v-nav>管理钱包</v-nav>
         <div class="walletsContainer">
           <ul class="walletList">
+
             <li v-for="(item,index) in allWallets" :key="index" @click="toDetailWallet(item)">
               <ul class="walletItem">
                 <li class="wIcon" :class="['wIcon_'+item.symbol]"></li>
@@ -24,6 +25,7 @@
     name: 'manageWallet',
     data() {
       return {
+
         allWallets:[],
         priceRateType: 'cny', //cny 人民币(默认) usd 美元
         priceRateMark: {cny: '￥', usd: '$'}
@@ -33,6 +35,7 @@
       getAllWallets() {
         let ethWallets = JSON.parse(localStorage.getItem('eth_wallets')) || [];
         let btcWallets = JSON.parse(localStorage.getItem('btc_wallets')) || [];
+
 
         // TODO: 更新备份状态
         ethWallets.forEach(value => {
@@ -121,6 +124,7 @@
               margin: 0.46rem 0 0 0.46rem;
               border-radius: 100%;
 
+
             }
             .wIcon_ETH {
               background: url("../../assets/common/img/icon_biao_eth.png") no-repeat center center;
@@ -143,6 +147,7 @@
                 font-weight: 400;
                 color: rgba(0,0,0,1);
                 line-height: 0.45rem;
+
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -158,6 +163,7 @@
             .backupHint {
               width: 0.95rem;
               height: 0.3rem;
+
               margin: 0.44rem 0 0 0.2rem;
               border-radius: 0.15rem;
               border:1px solid rgba(141,150,177,1);

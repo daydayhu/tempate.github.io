@@ -42,6 +42,7 @@ var BtcWallet = function(address, name, pwdPrompt) {
   this.address = address;
   this.walletName = name;
   this.pwdPrompt = pwdPrompt;
+
   this.cnyBalance = 0;
   this.usdBalance = 0;
 };
@@ -405,6 +406,7 @@ BtcWallet.prototype.toJson = function() {
     address: this.address,
     walletName: this.walletName,
     pwdPrompt: this.pwdPrompt,
+
     cnyBalance: this.cnyBalance,
     usdBalance: this.usdBalance
   };
@@ -436,6 +438,7 @@ BtcWallet.prototype.setWalletName = function(name, callback) {
   addNewWallet(this, null);
   return this;
 };
+
 BtcWallet.prototype.updateWallets = function() {
   console.log('当前BTC cny this_balance',this.cnyBalance);
   console.log('当前BTC usd this_balance',this.usdBalance);
@@ -502,6 +505,7 @@ function addNewWallet(wallet, keystore) {
           address: wallet.getAddress(),
           walletName: wallet.getWalletName() !== undefined ? wallet.getWalletName() : walletsObj[i].walletName,
           pwdPrompt: wallet.getPwdPrompt() !== undefined ? wallet.getPwdPrompt() : walletsObj[i].pwdPrompt,
+
           cnyBalance: wallet.cnyBalance,
           usdBalance: wallet.usdBalance
         });

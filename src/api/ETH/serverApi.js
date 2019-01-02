@@ -179,6 +179,7 @@ ServerApi.msgReaded = function(address, callback, error) {
   });
 };
 
+
 ServerApi.getTransactionByTxid = function(address,txid,callback,error) {
 
   if (address && txid) {

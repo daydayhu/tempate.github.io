@@ -2,6 +2,7 @@
     <div style="height: 100%;">
         <div class="top_nav">
             <div class="back_icon" @click="back"></div>
+
             <p>{{currentWallet && currentWallet.walletName}}</p>
         </div>
         <div class="content_color">
@@ -221,7 +222,8 @@
             wallet.delete();
             if (this.common.Wallet.getCurrWallet()) {
               this.$router.push({
-                path: '/index',
+                path: '/warp',
+
                 query: {
                   type: 'ETH',
                 },
@@ -229,7 +231,8 @@
             } else {
               if (this.btcCommon.BtcWallet.getCurrWallet()) {
                 this.$router.push({
-                  path: '/index',
+                  path: '/warp',
+
                   query: {
                     type: 'BTC',
                   },
@@ -246,7 +249,8 @@
             wallet.delete();
             if (this.btcCommon.BtcWallet.getCurrWallet()) {
               this.$router.push({
-                path: '/index', query: {
+                path: '/warp', query: {
+
                   type: 'BTC',
                 },
               });
@@ -255,7 +259,8 @@
                 console.log(this.common.Wallet.getCurrWallet());
                 localStorage.setItem('wallet_system', 'ETH');
                 this.$router.push({
-                  path: '/index', query: {
+                  path: '/warp', query: {
+
                     type: 'ETH',
                   },
                 });
@@ -282,6 +287,7 @@
         }
       },
       back() {
+
         // TODO: 暂时回退
         history.back();
         // this.$router.push({
@@ -363,11 +369,13 @@
     },
   };
 </script>
+
 <style lang="less" scoped>
     a {
         text-decoration: none;
         outline: none;
     }
+
 
     .content_color {
       background: rgba(246,246,246,1);
@@ -381,6 +389,7 @@
         width: 100%;
         height: 1.2rem;
         margin-left: 0.18rem;
+
         border-bottom: 0.02rem solid #E6E6E6;
         position: relative;
     }
@@ -390,11 +399,13 @@
         line-height: 1.2rem;
         margin-left: 0.57rem;
         font-weight: 600;
+
         color: #050505;
     }
 
     .w_div span:nth-child(2) {
         font-size: 0.26rem;
+
         color: #9B9B9B;
         line-height: 1.2rem;
         width: 3.8rem;
@@ -437,6 +448,7 @@
     }
 
     button.del {
+
         bottom: 0.5rem;
         border: 0.03rem solid #616E91;
         background: inherit;

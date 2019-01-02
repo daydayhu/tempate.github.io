@@ -1,4 +1,5 @@
 <template>
+
     <div style="width: 100%;">
         <!--头部-->
       <div class="top_nav">
@@ -16,6 +17,7 @@
                         @bottom-status-change="handleBottomChange"
                         :bottom-all-loaded="allLoaded"
                         ref="loadmore" :autoFill="false" >
+
                     <p class="noMessage" v-show="!noticeList.length && topStatus !== 'loading'">没有新消息</p>
                     <div class="noticeContainer" :style="{ minHeight: wrapperHeight - 65 + 'px' }">
                       <div class="box_html" style="padding: 0.2rem;" v-for="(item,index) in noticeList" @click="toTransferInfo(item)">
@@ -34,6 +36,7 @@
                         </div>
                       </div>
                     </div>
+
               <div slot="top" class="mint-loadmore-top">
                         <span v-show="topStatus === 'loading'">
                               <span>
@@ -69,6 +72,7 @@
     export default {
         data(){
             return{
+
                 noticeDB: null,
                 as:false,
                 noticeList:[],
@@ -122,6 +126,7 @@
                 }
               });
             },
+
             loadTop: function(){
                 var that = this;
                 setTimeout(()=>{
@@ -129,6 +134,7 @@
                     that.$refs.loadmore.onTopLoaded()
                 },1500)
             },
+
             loadBottom: function(){
                 var that = this;
                 setTimeout(()=>{
@@ -136,6 +142,7 @@
                     that.$refs.loadmore.onBottomLoaded()
                 },1000)
             },
+
             loadPageList: function(){
                 this.createDB();
             },
@@ -152,15 +159,20 @@
             handleBottomChange(status){
                 this.bottomStatus = status
             },
+
             toTransferInfo(item) {
               // TODO: 变更可读状态
               item.readStatus = true;
-              this.noticeDB.update(item.id,item);
+              setTimeout(()=>{
+                this.noticeDB.update(item.id,item);
+              },300);
+
               // TODO: 路由跳转 record
               /*
               * 区分跳转ETH/BTC
               *
               * */
+              console.log('item.assetType',item.assetType);
               switch (item.assetType) {
                 case "USDT":
                 case "BTC":
@@ -176,6 +188,8 @@
                   });
                   break;
                 default:
+                  console.log('item.address',item.address)
+                  console.log('item.txid',item.txid)
                   this.$ethServerApi.getTransactionByTxid(item.address,item.txid,res=>{
                     console.log('etTransactionByTxid res========',res);
                     this.$router.push({
@@ -243,6 +257,7 @@
             this.$store.commit("a",this.as);
             $('.mint_span').addClass('mint_span_div');
             this.loadPageList();
+
             this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top
         },
         computed:{
@@ -255,6 +270,7 @@
         },
     }
 </script>
+
 <style lang="less" scoped>
     .noMessage {
 

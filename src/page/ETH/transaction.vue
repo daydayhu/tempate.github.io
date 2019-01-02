@@ -274,7 +274,8 @@
       },
       back() {
         this.$router.push({
-          path: '/index',
+          path: '/warp',
+
           query: {
             type: this.$route.query.type,
             balance: this.$route.query.balance,

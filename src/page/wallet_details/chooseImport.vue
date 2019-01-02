@@ -162,7 +162,8 @@
 
                       localStorage.setItem('eth_zjc' + wallet.address, '4');
                       _this.$router.push({
-                        path: '/index',
+                        path: '/warp',
+
                         query: {
                           type: 'ETH',
                         },
@@ -190,7 +191,8 @@
                       localStorage.setItem('eth_zjc' + wallet.address, '2');
                       localStorage.setItem('isCanBackUp:' + wallet.address, 'no');
                       _this.$router.push({
-                        path: 'index',
+                        path: '/warp',
+
                         query: {
                           type: 'ETH',
                         },
@@ -209,7 +211,7 @@
                       localStorage.setItem('eth_zjc' + wallet.address, '3');
                       localStorage.setItem('isCanBackUp:' + wallet.address, 'no');
                       _this.$router.push({
-                        path: 'index',
+                        path: '/warp',
                         query: {
                           type: 'ETH',
                         },
@@ -234,7 +236,8 @@
                     } else {
                       localStorage.setItem('btc_zjc' + wallet.address, '4');
                       _this.$router.push({
-                        path: 'index',
+                        path: '/warp',
+
                         query: {
                           type: 'BTC',
                         },
@@ -260,7 +263,8 @@
 
                       localStorage.setItem('isCanBackUp:' + wallet.address, 'no');
                       _this.$router.push({
-                        path: 'index',
+                        path: '/warp',
+
                         query: {
                           type: 'BTC',
                         },
@@ -279,7 +283,8 @@
                       localStorage.setItem('isCanBackUp:' + wallet.address, 'no');
                       localStorage.setItem('btc_zjc' + wallet.address, '3');
                       _this.$router.push({
-                        path: 'index',
+                        path: '/warp',
+
                         query: {
                           type: 'BTC',
                         },

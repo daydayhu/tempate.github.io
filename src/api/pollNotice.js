@@ -31,11 +31,12 @@ Notice.prototype.longPoll = function(callback) {
   let addr = this.addrSet[this.addrNum];
 
   ServerApi.getNewEthMessage(addr, (res) => {
-
     if (res.status_code === 200) {
       console.log('etc长轮询数据',res);
-      // 为res 增加地址
-      res.data.address = addr;
+      if (res.data.length) {
+        // 为res 增加地址
+        res.data[0].address = addr;
+      }
       callback(res);
       this.addrNum++;
       this.timer = setTimeout(() => {
@@ -44,12 +45,14 @@ Notice.prototype.longPoll = function(callback) {
 
     }else {
       setTimeout(() => {
+
         this.longPoll(callback);
       }, 20000);
     }
 
   },(err) => {
     setTimeout(() => {
+
       this.longPoll(callback);
     }, 20000);
   });

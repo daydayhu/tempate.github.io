@@ -50,7 +50,8 @@
       backLater() {
         console.log(this.$route.query.type);
         this.$router.push({
-          path: '/index',
+          path: '/warp',
+
           query: {
             type: this.$route.query.type,
           },

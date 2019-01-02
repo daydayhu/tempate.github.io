@@ -120,7 +120,8 @@
                 _this.showa();
                 $(".btn_div").html('重置成功');
                 _this.$store.commit("address",wallet.address);
-                _this.$router.push({path:"/index"});
+                _this.$router.push({path:"/warp"});
+
               }
             },null);
           }
@@ -135,7 +136,8 @@
                 _this.showa();
                 $(".btn_div").html('重置成功');
                 _this.$store.commit("address",wallet.address);
-                _this.$router.push({path:"/index"});
+                _this.$router.push({path:"/warp"});
+
               }
             },null);
           }

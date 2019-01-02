@@ -15,6 +15,7 @@
                 <div style="color: #FF6363;">{{addressErr}}</div>
                 <div style="position: relative;">
                     <!--onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')"-->
+
                     <input type="number" placeholder="转账金额" v-model.trim="transferAccounts" oninput="if(value.length>14)value=value.slice(0,14)" onpaste="return false;">
                     <div class="p_zhje">账户金额：<span>{{this.balances | numFormat('ETH')}} {{symbol}}</span></div>
                 </div>

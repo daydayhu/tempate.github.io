@@ -10,13 +10,20 @@
         <div class="segment">
             <ul class="header">
                 <li class="currency">货币</li>
-                <li class="marketValue">最新价/市值</li>
-                <li class="change" @click="sortList('percent_change_24h')">涨跌幅 <span class="changIcon"
-                                                                                     :class="{'zhangfu':!sortIf}"></span>
+                <li class="marketValue" :class="{'active':active}" @click="sortList('oneMarket',1)">市值 <span
+                        class="changIcon"
+                        :class="{'zhangfu':!szsortIf}"
+                        v-if="active"></span>
+                </li>
+                <li class="change" :class="{'active':!active}" @click="sortList('percent_change_24h',2)">涨跌幅 <span
+                        class="changIcon"
+                        :class="{'zhangfu':!sortIf}"
+                        v-if="!active"></span>
                 </li>
             </ul>
             <ul class="content">
-                <li class="item" v-for="(item,index) in tokenList" :key="index">
+                <li class="item" v-for="(item,index) in shoewTokenList" :key="index">
+
                     <ul>
                         <li class="num">{{index+1}}</li>
                         <li class="currencyIcon"><img :src="item.icon"/></li>
@@ -34,7 +41,6 @@
                         </li>
                     </ul>
                 </li>
-                <p v-if="tokenList.length<1">请先关注token</p>
 
             </ul>
         </div>
@@ -48,11 +54,15 @@
     data() {
       return {
         tokens: '',
-        tokenList: {},
+        tokenList: [],
+        shoewTokenList: [],
         priceRateSet: {},
         priceRateMark: {CNY: '￥', USD: '$'},
         priceRateType: 'CNY',
-        sortIf: true,
+        active: '',
+        sortIf: '',
+        szsortIf: '',
+
 
       };
     },
@@ -81,8 +91,15 @@
             symbol: str,
           }, (res) => {
             if (res.status != 200) {
+
               this.tokenVal = '';
-              this.$toast('请检查输入的Token是否正确');
+              if (res.status == 429) {
+                this.$toast('请求频率过快');
+              } else {
+                this.$toast('请检查输入的Token是否正确');
+              }
+              this.$indicator.close();
+
             } else {
               resolve(res);
             }
@@ -102,17 +119,39 @@
           }
         };
       },
-      sortList(item) {
-        this.sortIf = !this.sortIf;
-        if (this.sortIf) {
-          this.tokenList.sort(this.sortObj(item, true));
+      sortList(item, ind) {
+        if (ind === 1) {
+          this.active = true;
+          localStorage.setItem('sortactive', true);
+
+          this.szsortIf = !this.szsortIf;
+          localStorage.setItem('szsortIf', this.szsortIf);
+          if (this.szsortIf) {
+            this.tokenList.sort(this.sortObj(item, true));
+          } else {
+            this.tokenList.sort(this.sortObj(item, false));
+          }
         } else {
-          this.tokenList.sort(this.sortObj(item, false));
+          this.active = false;
+          localStorage.setItem('sortactive', false);
+          this.sortIf = !this.sortIf;
+          localStorage.setItem('sortIf', this.sortIf);
+
+          if (this.sortIf) {
+            this.tokenList.sort(this.sortObj(item, true));
+          } else {
+            this.tokenList.sort(this.sortObj(item, false));
+          }
         }
+        this.shoewTokenList = this.tokenList;
       },
     },
     mounted: function() {
-      let token = localStorage.getItem('tokens');
+      this.active = localStorage.getItem('sortactive') ? JSON.parse(localStorage.getItem('sortactive')) : true;
+      this.sortIf = localStorage.getItem('sortIf') ? JSON.parse(localStorage.getItem('sortIf')) : true;
+      this.szsortIf = localStorage.getItem('szsortIf') ? JSON.parse(localStorage.getItem('szsortIf')) : true;
+      let token = localStorage.getItem('tokens') || '';
+
 
       if (token == '') {
         localStorage.setItem('tokens', 'ETH');
@@ -132,6 +171,8 @@
       let that = this;
       let tokens = localStorage.getItem('tokens');
       this.tokens = tokens || 'ETH';
+      this.$indicator.open();
+
       this.icons(this.tokens).then((icons) => {
 
         that.queryPrice(this.tokens, () => {
@@ -157,10 +198,15 @@
               list.push(data[item]);
             }
             that.tokenList = list;
-            this.$nextTick(() => {
-              that.sortList('percent_change_24h');
-            });
+              if (that.active) {
+                that.sortList('oneMarket', 1);
+              } else {
+                that.sortList('percent_change_24h', 2);
+              }
+            this.$indicator.close();
           }, (e) => {
+            this.$indicator.close();
+
             console.log(e, '获取价值失败');
           });
         });
@@ -207,7 +253,8 @@
         float: left;
         width: 0.36rem;
         height: 0.36rem;
-        background: url("") no-repeat center center;
+        background: url("../../assets/common/img/icon_sousuo_hui@2x.png") no-repeat center center;
+
         background-size: cover;
     }
 
@@ -237,28 +284,35 @@
         text-indent: 0.3rem;
     }
 
-    .segment .header li:nth-child(3) {
+    .segment .header li:nth-child(3), .segment .header li:nth-child(2) {
         position: relative;
-        color: #3089EF;
+
         text-indent: 0.6rem;
 
     }
 
-    .segment .header li:nth-child(3) .changIcon {
+    .segment .header li.active {
+        color: #3089EF;
+    }
+
+    .segment .header li:nth-child(3) .changIcon, .segment .header li:nth-child(2) .changIcon {
+
         width: 0.17rem;
         height: 0.36rem;
         position: absolute;
         top: 0.29rem;
-        background: url("") no-repeat center center;
+        background: url("../../assets/common/img/icon_zhangdiefu@2x.png") no-repeat center center;
         background-size: cover;
     }
 
-    .zhangfu {
+    .segment .header li:nth-child(3) .zhangfu, .segment .header li:nth-child(2) .zhangfu {
+
         width: 0.17rem;
         height: 0.36rem;
         position: absolute;
         top: 0.29rem;
-        background: url("") no-repeat center center;
+        background: url("../../assets/common/img/icon_zhangdiefucopy@2x.png") no-repeat center center;
+
         background-size: cover;
     }
 

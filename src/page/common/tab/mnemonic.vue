@@ -125,7 +125,8 @@
                 $ ('.btn_div').html(err).show ().delay (500).fadeOut ();
               }else{
                 _this.$store.commit("address",wallet.address);
-                _this.$router.push({path:"/index"});
+                _this.$router.push({path:"/warp"});
+
               }
             },null);
           }
@@ -137,7 +138,8 @@
                 $ ('.btn_div').html(err).show ().delay (500).fadeOut ();
               }else{
                 _this.$store.commit("address",wallet.address);
-                _this.$router.push({path:"/index"});
+                _this.$router.push({path:"/warp"});
+
               }
             },null);
           }
