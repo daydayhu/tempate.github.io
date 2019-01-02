@@ -1,0 +1,506 @@
+/*重置代码*/
+html, body {
+  font-family: PingFang-SC-Bold,"Helvetica Neue", Helvetica, STHeiTi, sans-serif, arial;
+  -webkit-text-size-adjust: none;
+  word-break: break-all;
+}
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, a, code, em, img, q, small, strong, dd, dl, dt, li, ol, ul, fieldset, form, label, table, tbody, tr, th, td, input, figure, section {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: PingFang-SC-Medium;
+}
+
+a {
+    text-decoration: none;
+    color: #333
+}
+
+body {
+    min-width: 320px;
+    margin: 0 auto;
+    position: relative;
+    font-size: 16px;
+    /*background:rgba(246,246,247,1);*/
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+img {
+    vertical-align: middle;
+    -ms-interpolation-mode: bicubic;
+}
+
+address, caption, cite, code, dfn, em, i, strong, th, var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+caption, th {
+    text-align: left;
+}
+
+q:before, q:after {
+    content: '';
+}
+
+a:hover, a:focus {
+    text-decoration: none;
+}
+
+abbr, acronym {
+    border: 0;
+}
+
+input, button, select, textarea {
+    outline: none;
+}
+
+textarea, input {
+    -webkit-appearance: none;
+    font-family: "Microsoft Yahei", helvetica, arial, sans-serif;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    /*padding: 4px 8px;*/
+    padding-bottom: 0.17rem;
+    padding-top: 0.17rem;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #cfcfcf;
+    font-size: 16px;
+    color: #444;
+    display: block;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: checkbox;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+input[type="radio"] {
+    -webkit-appearance: radio;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/*重置代码结束*/
+
+input, textarea {
+    font-size: .3rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+/*字体颜色为白色的class名*/
+.w {
+    color: white;
+}
+
+/*字体颜色为红色的class名*/
+.red {
+    color: red;
+}
+
+/*字体颜色为蓝色的class名*/
+.b {
+    color: rgba(47, 125, 243, 1);
+}
+
+/*字体颜色为灰色的class名*/
+.g {
+    color: rgba(155, 155, 155, 1);
+}
+
+/*浮动class名*/
+.float {
+    float: left;
+}
+
+.floatr {
+    float: right;
+}
+
+/*清除浮动*/
+.clear::after {
+    content: '';
+    display: block;
+    overflow: hidden;
+    clear: both;
+}
+
+/*返回箭头*/
+/*.back_icon*/
+/*.back_icon:after {content:''; position: absolute; width:0.3rem;  height:0.3rem; border: 0.03rem solid #ffffff;  margin-top: 0.41rem;*/
+/*margin-left: 0.48rem; transform: rotate(-45deg);  border-right: none;border-bottom:none;}*/
+
+.back_icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1rem;
+    height: 1.10rem;
+    background: transparent;
+}
+
+.back_icon:after {
+    content: '';
+    position: absolute;
+    margin-top: -0.08rem;
+    left: 0.3rem;
+    width: 0.22rem;
+    height: 0.22rem;
+    border-top: 2px solid;
+    border-right:2px solid;
+    transform: rotateZ(-135deg);
+    top: 0.5rem;
+    border-color: rgba(255, 255, 255, 1);
+    z-index: 99;
+}
+
+/*头部*/
+.top_nav {
+    width: 7.5rem;
+    height: 1.10rem;
+    background: rgba(55, 68, 102, 1);
+    padding: 0 0.2rem;
+    line-height: 1.10rem;
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: #ffffff;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.42rem;
+    z-index: 999;
+    font-weight: bold;
+
+}
+
+.top {
+    width: 100%;
+    height: 0.88rem;
+    background: rgba(249, 249, 249, 1);
+    padding: 0 0.2rem;
+    border-bottom: 0.01rem solid rgba(232, 232, 232, 1);
+}
+
+.top_z {
+    height: 100%;
+    padding: 0.25rem;
+}
+
+p.My_xx {
+    width: 5.7rem; /*必须设置宽度*/
+    overflow: hidden; /*溢出隐藏*/
+    text-overflow: ellipsis; /*以省略号...显示*/
+    white-space: nowrap; /*强制不换行*/
+    text-align: center;
+    line-height: 0.88rem;
+    font-size: 0.33rem;
+    margin: 0 auto;
+    font-weight: bold;
+}
+
+/*内容区域背景颜色*/
+.content_color {
+    background-color: #2C3754;
+    padding-top: 1.1rem;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.conHei {
+    height: 100%;
+}
+
+/*黑色提示弹框*/
+/*.btn_div{  display: none;  position: absolute;  top: 70%;  width: 3.08rem;  height: 0.96rem;  background: rgb(0, 0, 0);  border-radius: 0.48rem;  opacity: 0.8138;  left: 30%;  color: white;  text-align: center;  line-height: 0.96rem;  }*/
+
+.btn_div {
+    display: none;
+    position: absolute;
+    top: 70%;
+    width: 3.60rem;
+    height: 0.96rem;
+    background: rgb(0, 0, 0);
+    border-radius: 0.48rem;
+    opacity: 0.8138;
+    left: 50%;
+    color: white;
+    text-align: center;
+    line-height: 0.96rem;
+    font-size: 0.30rem;
+    margin-left: -1.80rem;
+}
+
+/********************
+        加载动画
+************************/
+.loader {
+    width: 30%;
+    float: left;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+@-webkit-keyframes loading-3 {
+    50% {
+        transform: scale(0.4);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes loading-3 {
+    50% {
+        transform: scale(0.4);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes loading-3 {
+    50% {
+        transform: scale(0.4);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@-o-keyframes loading-3 {
+    50% {
+        transform: scale(0.4);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes loading-3 {
+    50% {
+        transform: scale(0.4);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.loading-3 {
+    position: relative;
+}
+
+.loading-3 i {
+    display: block;
+    width: 0.2rem;
+    height: 0.2rem;
+    border-radius: 50%;
+    position: absolute;
+    background: #209deb;
+}
+
+.loading-3 i:nth-child(1) {
+    top: 0.5rem;
+    left: 0;
+    -webkit-animation: loading-3 1s ease 0s infinite;
+    -moz-animation: loading-3 1s ease 0s infinite;
+    -o-animation: loading-3 1s ease 0s infinite;
+    animation: loading-3 1s ease 0s infinite;
+}
+
+.loading-3 i:nth-child(2) {
+    top: 0.34rem;
+    left: 0.34rem;
+    -webkit-animation: loading-3 1s ease 0.12s infinite;
+    -moz-animation: loading-3 1s ease 0.12s infinite;
+    -o-animation: loading-3 1s ease 0.12s infinite;
+    animation: loading-3 1s ease 0.12s infinite;
+}
+
+.loading-3 i:nth-child(3) {
+    top: 0;
+    left: 0.5rem;
+    -webkit-animation: loading-3 1s ease 0.24s infinite;
+    -moz-animation: loading-3 1s ease 0.24s infinite;
+    -o-animation: loading-3 1s ease 0.24s infinite;
+    animation: loading-3 1s ease 0.24s infinite;
+}
+
+.loading-3 i:nth-child(4) {
+    top: -.34rem;
+    left: .34rem;
+    -webkit-animation: loading-3 1s ease 0.36s infinite;
+    -moz-animation: loading-3 1s ease 0.36s infinite;
+    -o-animation: loading-3 1s ease 0.36s infinite;
+    animation: loading-3 1s ease 0.36s infinite;
+}
+
+.loading-3 i:nth-child(5) {
+    top: -0.5rem;
+    left: 0;
+    -webkit-animation: loading-3 1s ease 0.48s infinite;
+    -moz-animation: loading-3 1s ease 0.48s infinite;
+    -o-animation: loading-3 1s ease 0.48s infinite;
+    animation: loading-3 1s ease 0.48s infinite;
+}
+
+.loading-3 i:nth-child(6) {
+    top: -.34rem;
+    left: -.34rem;
+    -webkit-animation: loading-3 1s ease 0.6s infinite;
+    -moz-animation: loading-3 1s ease 0.6s infinite;
+    animation: loading-3 1s ease 0.6s infinite;
+    -o-animation: loading-3 1s ease 0.6s infinite;
+}
+
+.loading-3 i:nth-child(7) {
+    top: 0;
+    left: -.5rem;
+    -webkit-animation: loading-3 1s ease 0.72s infinite;
+    -moz-animation: loading-3 1s ease 0.72s infinite;
+    animation: loading-3 1s ease 0.72s infinite;
+    -o-animation: loading-3 1s ease 0.72s infinite;
+}
+
+.loading-3 i:nth-child(8) {
+    top: .34rem;
+    left: -.34rem;
+    -webkit-animation: loading-3 1s ease 0.84s infinite;
+    -moz-animation: loading-3 1s ease 0.84s infinite;
+    animation: loading-3 1s ease 0.84s infinite;
+    -o-animation: loading-3 1s ease 0.84s infinite;
+}
+
+.img_jz {
+    /*width: 100%;*/
+    /*height: 1rem;*/
+    display: block;
+}
+
+/*币种图标*/
+.symbol_icon_eth, .symbol_icon_ETH {
+    display: inline-block;
+    width: 0.67rem;
+    height: 0.67rem;
+    background: url("../../common/img/icon_biao_eth.png") no-repeat;
+    background-size: 100% 100%;
+    margin-top: 0.35rem;
+    margin-right: 0.25rem;
+}
+
+.symbol_icon_btc, .symbol_icon_BTC {
+    display: inline-block;
+    width: 0.67rem;
+    height: 0.67rem;
+    background: url("../../common/img/icon_biao_btc.png") no-repeat;
+    background-size: 100% 100%;
+    margin-top: 0.35rem;
+    margin-right: 0.25rem;
+}
+
+html, body {
+    height: 100%;
+}
+
+.top-nav {
+    width: 100%;
+    height: 1.10rem;
+    background: rgba(55, 68, 102, 1);
+    line-height: 1.10rem;
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: #ffffff;
+    text-align: center;
+    font-size: 0.42rem;
+    z-index: 99;
+}
+
+.top-nav .back {
+    width: 1.1rem;
+    height: 1.1rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.top-nav .back:after {
+    content: '';
+    position: absolute;
+    margin-top: -0.08rem;
+    left: 0.3rem;
+    width: 0.22rem;
+    height: 0.22rem;
+    border-top: 0.03rem solid;
+    border-right: 0.03rem solid;
+    transform: rotateZ(-135deg);
+    top: 0.5rem;
+    border-color: rgba(255, 255, 255, 1);
+    z-index: 99;
+}
+
+.toast {
+    position: absolute;
+    top: 50%;
+    min-width: 3.08rem;
+    /*width: 3.08rem;*/
+    height: 0.96rem;
+    background: rgb(0, 0, 0);
+    border-radius: 0.48rem;
+    left: 50%;
+    margin-left: -1.56rem;
+    color: white;
+    text-align: center;
+    line-height: 0.96rem;
+    letter-spacing: 1.5px;
+    opacity: 1;
+    font-size: 0.3rem;
+}
+button {
+  font-weight: bold !important;
+}
+.top_nav p{
+  font-weight: bold;
+}
+/*range 滑动块的颜色*/
+.mt-range-thumb {
+  background-color: #26a2ff;
+}
+/*range 滑动条颜色 */
+.mt-range-runway{
+  border-top-color: #ebeff4;
+}

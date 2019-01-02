@@ -1,0 +1,21 @@
+html, body {
+    height: 100%;
+}
+
+a:hover, a:focus {
+    text-decoration: none !important;
+}
+
+.toast {
+    position: absolute;
+    top: 23%;
+    width: 3.08rem;
+    height: 0.96rem;
+    background: rgb(0, 0, 0);
+    border-radius: 0.48rem;
+    left: 25%;
+    color: white;
+    text-align: center;
+    line-height: 0.96rem;
+    opacity: 1;
+}
