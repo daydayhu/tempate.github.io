@@ -1,6 +1,5 @@
 <template>
     <div class="warp">
-
         <div class="viewContainer">
             <index v-if="'active1' == active"></index>
             <quotes v-if="'active2' == active"></quotes>
@@ -88,8 +87,10 @@
       setting,
     },
     methods: {
-
       tab(ind) {
+        if(ind !=1){
+          this.$indicator.close();
+        }
         this.active = 'active' + ind;
         localStorage.setItem('warpActive', this.active);
       },
@@ -444,10 +445,19 @@
         return omniData;
 
       },
+      pushHistory(e) {
+        window.history.pushState("warp",null,location.href);
+        // window.history.forward(1); 兼容ie考虑
+      },
     },
-    mounted: function() {
+    mounted() {
       this.createDB();
       this.active = localStorage.getItem('warpActive') || 'active1';
+      //TODO:  监听物理按键
+      if (window.history && window.history.pushState) {
+        window.addEventListener("popstate", this.pushHistory);
+      }
+      window.history.pushState("warp",null,location.href);
     },
     destroyed() {
       if (this.btcSocket) {
@@ -462,6 +472,7 @@
         }
         this.ethPoll = null;
       }
+      window.removeEventListener('popstate', this.pushHistory);
     }
   };
 </script>
@@ -481,7 +492,7 @@
             width: 100%;
             background-color: #FCFCFC;
             min-height: 1.05rem;
-            zoom: 1;
+            z-index: 10;
             ul {
                 display: flex;
                 justify-content: space-around;

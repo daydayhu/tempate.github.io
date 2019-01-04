@@ -242,10 +242,10 @@ router.beforeEach((to, from, next) => {
       var sys = localStorage.getItem('wallet_system') ? localStorage.getItem('wallet_system') : '';
       switch (sys) {
         case 'ETH':
-          next({path: '/index', query: {type: sys}});
+          next({path: '/warp', query: {type: sys}});
           break;
         case 'BTC':
-          next({path: '/index', query: {type: sys}});
+          next({path: '/warp', query: {type: sys}});
           break;
         default:
           next({path: '/login'});

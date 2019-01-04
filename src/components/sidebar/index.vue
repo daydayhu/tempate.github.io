@@ -106,7 +106,7 @@
 
             // localStorage.setItem('btc_readStatus', false);
             this.$router.push({
-              path: '/BTC/message_center',
+              path: '/ETH/message_center',
             });
             break;
         }

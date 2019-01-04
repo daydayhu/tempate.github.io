@@ -1,5 +1,6 @@
 <template>
     <div class="searchContainer" >
+        <v-nav>搜索</v-nav>
         <div class="searchC">
             <input type="search" v-model="tokenVal" class="search"  @focus="makeIf = true" @keydown.enter="seachToken"
                    v-focus>
@@ -216,9 +217,22 @@
         width: 100%;
         height: 100%;
         background-color: #ffffff;
+        &>p{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1;
+            text-align: center;
+            line-height: 1.1rem;
+            font-size: 0.42rem;
+            font-family: Semibold;
+            color: #ffffff;
+            background: #374466;
+        }
         .searchC {
             width: 100%;
-            margin-top: 0.44rem;
+            margin-top: 1.54rem;
             position: relative;
             input {
                 width: 6.98rem;

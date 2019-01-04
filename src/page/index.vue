@@ -150,7 +150,6 @@
         if (this.getCurrentWallet()) {
           this.$router.push({
             path: '/warp',
-
             query: {
               type: this.currencyType,
             },

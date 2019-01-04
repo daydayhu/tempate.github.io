@@ -1,5 +1,6 @@
 <template>
     <div class="marketContainer">
+        <p class="title">行情</p>
         <div class="searchC" @click="toSearch">
             <input type="text" class="search" disabled>
             <div class="iconContainer">
@@ -12,13 +13,13 @@
                 <li class="currency">货币</li>
                 <li class="marketValue" :class="{'active':active}" @click="sortList('oneMarket',1)">市值 <span
                         class="changIcon"
-                        :class="{'zhangfu':!szsortIf}"
-                        v-if="active"></span>
+                        :class="{'zhangfu':!szsortIf && active,'diefu':szsortIf && active}"
+                ></span>
                 </li>
                 <li class="change" :class="{'active':!active}" @click="sortList('percent_change_24h',2)">涨跌幅 <span
                         class="changIcon"
-                        :class="{'zhangfu':!sortIf}"
-                        v-if="!active"></span>
+                        :class="{'zhangfu':!sortIf && !active,'diefu':sortIf && !active}"
+                ></span>
                 </li>
             </ul>
             <ul class="content">
@@ -62,7 +63,7 @@
         active: '',
         sortIf: '',
         szsortIf: '',
-
+        onReady: false,
 
       };
     },
@@ -73,16 +74,16 @@
         });
       },
       toFocus(e) {
-        console.log('focus-------------------', e);
       },
-      queryPrice(list, callback) {
-        this.$ethServerApi.queryPrice(list.toLocaleLowerCase().split(','), (res) => {
-          if (res.status_code === 200) {
+      queryPrice( callback) {
+        this.$ethServerApi.queryPrice(this.tokens.toLocaleLowerCase().split(','), (res) => {
             res.data.forEach((value) => {
               this.priceRateSet[value.asset.toUpperCase()] = value.prices;
             });
-            if (callback) callback();
-          }
+            if (callback){
+              callback()
+
+            }
         });
       },
       icons(str) {
@@ -123,8 +124,10 @@
         if (ind === 1) {
           this.active = true;
           localStorage.setItem('sortactive', true);
+          if (this.onReady) {
+            this.szsortIf = !this.szsortIf;
 
-          this.szsortIf = !this.szsortIf;
+          }
           localStorage.setItem('szsortIf', this.szsortIf);
           if (this.szsortIf) {
             this.tokenList.sort(this.sortObj(item, true));
@@ -134,7 +137,9 @@
         } else {
           this.active = false;
           localStorage.setItem('sortactive', false);
-          this.sortIf = !this.sortIf;
+          if (this.onReady) {
+            this.sortIf = !this.sortIf;
+          }
           localStorage.setItem('sortIf', this.sortIf);
 
           if (this.sortIf) {
@@ -143,15 +148,19 @@
             this.tokenList.sort(this.sortObj(item, false));
           }
         }
+
         this.shoewTokenList = this.tokenList;
+        this.onReady = true;
       },
     },
     mounted: function() {
-      this.active = localStorage.getItem('sortactive') ? JSON.parse(localStorage.getItem('sortactive')) : true;
-      this.sortIf = localStorage.getItem('sortIf') ? JSON.parse(localStorage.getItem('sortIf')) : true;
-      this.szsortIf = localStorage.getItem('szsortIf') ? JSON.parse(localStorage.getItem('szsortIf')) : true;
-      let token = localStorage.getItem('tokens') || '';
+      this.onReady = false;
 
+      this.active = JSON.parse(localStorage.getItem('sortactive') );
+      this.sortIf = JSON.parse(localStorage.getItem('sortIf')) ;
+      this.szsortIf = JSON.parse(localStorage.getItem('szsortIf'));
+
+      let token = localStorage.getItem('tokens') || '';
 
       if (token == '') {
         localStorage.setItem('tokens', 'ETH');
@@ -164,18 +173,42 @@
           localStorage.setItem('tokens', token);
         }
       }
-
       this.priceRateType = localStorage.getItem('priceRateType')
           ? localStorage.getItem('priceRateType')
           : this.priceRateType;
       let that = this;
       let tokens = localStorage.getItem('tokens');
       this.tokens = tokens || 'ETH';
-      this.$indicator.open();
+
+      let key = '_getQuotes_'+'/marketcap/v1/cryptocurrency/quotes/latest';
+      this.tokenList = $Store.state.getApiCache(key) || [];
+      if (this.tokenList.length) {
+        if (this.active) {
+          this.active = true;
+          localStorage.setItem('sortactive', true);
+          localStorage.setItem('szsortIf', this.szsortIf);
+          if (this.szsortIf) {
+            this.tokenList.sort(this.sortObj('oneMarket', true));
+          } else {
+            this.tokenList.sort(this.sortObj('oneMarket', false));
+          }
+        } else {
+          this.active = false;
+          localStorage.setItem('sortactive', false);
+          localStorage.setItem('sortIf', this.sortIf);
+          if (this.sortIf) {
+            this.tokenList.sort(this.sortObj('percent_change_24h', true));
+          } else {
+            this.tokenList.sort(that.sortObj('percent_change_24h', false));
+          }
+        }
+        this.shoewTokenList = this.tokenList;
+      }else {
+        this.$indicator.open();
+      }
 
       this.icons(this.tokens).then((icons) => {
-
-        that.queryPrice(this.tokens, () => {
+        this.queryPrice( () => {
           ServerApi.getQuotes('/marketcap/v1/cryptocurrency/quotes/latest', {
             symbol: tokens,
           }, (res) => {
@@ -198,18 +231,37 @@
               list.push(data[item]);
             }
             that.tokenList = list;
-              if (that.active) {
-                that.sortList('oneMarket', 1);
+            if (that.active) {
+              that.active = true;
+              localStorage.setItem('sortactive', true);
+              localStorage.setItem('szsortIf', this.szsortIf);
+              if (that.szsortIf) {
+                that.tokenList.sort(that.sortObj('oneMarket', true));
               } else {
-                that.sortList('percent_change_24h', 2);
+                that.tokenList.sort(that.sortObj('oneMarket', false));
               }
+            } else {
+              that.active = false;
+              localStorage.setItem('sortactive', false);
+              localStorage.setItem('sortIf', this.sortIf);
+              if (that.sortIf) {
+                that.tokenList.sort(this.sortObj('percent_change_24h', true));
+              } else {
+                that.tokenList.sort(that.sortObj('percent_change_24h', false));
+              }
+            }
+            this.shoewTokenList = this.tokenList;
+            $Store.state.setApiCache(key, JSON.parse(JSON.stringify(this.tokenList)));
             this.$indicator.close();
           }, (e) => {
+           if(e.status==429){
+             this.$toast('请求频率过快');
+           }
             this.$indicator.close();
-
-            console.log(e, '获取价值失败');
           });
         });
+
+
       });
     },
   };
@@ -222,12 +274,29 @@
         width: 100%;
         height: 100%;
         background-color: #ffffff;
+        overflow-y: scroll;
+
+    }
+
+    .marketContainer .title {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+        text-align: center;
+        line-height: 1.1rem;
+        font-size: 0.42rem;
+        font-family: Semibold;
+        color: #ffffff;
+        background: #374466;
     }
 
     .searchC {
         width: 100%;
-        margin-top: 0.44rem;
+        margin-top: 1.54rem;
         position: relative;
+
     }
 
     .searchC input {
@@ -301,30 +370,28 @@
         height: 0.36rem;
         position: absolute;
         top: 0.29rem;
-        background: url("../../assets/common/img/icon_zhangdiefu@2x.png") no-repeat center center;
+        background: url("../../assets/common/img/icon_x_zhangfu_ling@2x.png") no-repeat center center;
         background-size: cover;
     }
 
     .segment .header li:nth-child(3) .zhangfu, .segment .header li:nth-child(2) .zhangfu {
-
-        width: 0.17rem;
-        height: 0.36rem;
-        position: absolute;
-        top: 0.29rem;
         background: url("../../assets/common/img/icon_zhangdiefucopy@2x.png") no-repeat center center;
+        background-size: cover;
+    }
 
+    .segment .header li:nth-child(3) .diefu, .segment .header li:nth-child(2) .diefu {
+        background: url("../../assets/common/img/icon_zhangdiefu@2x.png") no-repeat center center;
         background-size: cover;
     }
 
     .segment .content {
-        height: 1.32rem;
         width: 100%;
         padding-left: 0.30rem;
         box-sizing: border-box;
     }
 
     .segment > .content .item {
-        height: 100%;
+        height: 1.32rem;
         border-bottom: 1px solid rgba(229, 229, 229, 1);
     }
 

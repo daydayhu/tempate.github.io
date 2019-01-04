@@ -78,7 +78,7 @@
         let that = this;
         // 获取所有的token
         wallet.getAllTokens({size: page.size, page: page.num}, (err, data) => {
-          that.all_token = data.list;
+          that.all_token = data;
           // 获取持有的token
           wallet.getTokens((err, res) => {
             that.token_data = res;

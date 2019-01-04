@@ -111,6 +111,7 @@
         transform: translate3d(0, 0, 0);
       }
     }
+
     @keyframes fold-right-out  {
       0% {
         width: 100%;

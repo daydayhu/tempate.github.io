@@ -212,6 +212,7 @@ ServerApi.queryPrice = function (res,success,error) {
   console.log(res,"qiwuhiqhwieq---=-=-=---=-");
   var data = ['btc','eth','sph','soc','zsh','usdt'];
   cacheSendHttp('/wallet/queryPrice', 'post', res, function(response) {
+    console.log('这里也是一次--------------');
     if (success) success(response);
   },function (err) {
     if (error) error(err);
